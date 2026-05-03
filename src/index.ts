@@ -1,12 +1,15 @@
 import { Hono } from 'hono';
-import { MegaHAL } from './megahal/megahal.js';
-// Note: personalities are now lazy-loaded, no need to import all of them
+import { ChatEngineRegistry } from './engines/index.js';
+// Import MegaHAL engine to register it (lazy-loaded via registry)
+import './engines/megahal/index.js';
+import type { ChatEngine } from './engines/types.js';
 
 // Vercel Node.js runtime - use process.env instead of Bindings
 export interface GroupConfig {
 	personality: string;
 	learning: 'on' | 'off';
 	prefix: string | 'none';
+	engine: string; // default: 'megahal'
 }
 
 // In-memory storage for Vercel (will be reset on cold starts)
@@ -21,6 +24,7 @@ export const getGroupConfig = async (_kv: any, groupId: string): Promise<GroupCo
 			personality: 'default',
 			learning: 'on',
 			prefix: '$',
+			engine: 'megahal',
 		}
 	);
 };
@@ -29,12 +33,12 @@ export const saveGroupConfig = async (_kv: any, groupId: string, config: GroupCo
 	configStore.set(`config:${groupId}`, config);
 };
 
-export const getBrain = async (_kv: any, groupId: string, personality: string): Promise<Uint8Array | null> => {
-	return brainStore.get(`brain:${groupId}:${personality}`) || null;
+export const getBrain = async (_kv: any, groupId: string, engine: string, personality: string): Promise<Uint8Array | null> => {
+	return brainStore.get(`brain:${groupId}:${engine}:${personality}`) || null;
 };
 
-export const saveBrain = async (_kv: any, groupId: string, personality: string, brain: Uint8Array): Promise<void> => {
-	brainStore.set(`brain:${groupId}:${personality}`, brain);
+export const saveBrain = async (_kv: any, groupId: string, engine: string, personality: string, brain: Uint8Array): Promise<void> => {
+	brainStore.set(`brain:${groupId}:${engine}:${personality}`, brain);
 };
 
 const app = new Hono();
@@ -100,21 +104,31 @@ app.post('/', async (c) => {
 		return c.text('Empty message after prefix');
 	}
 
-	// MegaHAL Processing - Instantiate WITHOUT auto-training
-	const hal = new MegaHAL(config.personality);
-	// Disable learning during main request loop to avoid Markov CPU drain
-	hal.learning = false;
-
-	// Try to load brain from storage first!
-	const brainData = await getBrain(null, groupId, config.personality);
-	if (brainData) {
-		hal.load(brainData); // Fast binary load (Takes < 1ms)
-	} else {
-		// ONLY train from scratch if the brain doesn't exist in storage yet
-		await hal.become(config.personality);
+	// Get the chat engine via registry (lazy-loaded)
+	const engine = await ChatEngineRegistry.getEngine(config.engine);
+	if (!engine) {
+		console.error(`Engine '${config.engine}' not found`);
+		return c.text(`Engine '${config.engine}' not available`);
 	}
 
-	const reply = hal.reply(text);
+	// Load brain from storage if it exists
+	const brainData = await getBrain(null, groupId, config.engine, config.personality);
+	if (brainData) {
+		engine.load(brainData); // Fast binary load (Takes < 1ms)
+	} else {
+		// Initialize engine with personality if no brain exists
+		if (engine.become) {
+			await engine.become(config.personality);
+		}
+	}
+
+	// Disable learning during main request loop to avoid Markov CPU drain
+	// (MegaHALEngine.learning is a setter that propagates to underlying MegaHAL)
+	if ('learning' in engine) {
+		(engine as any).learning = false;
+	}
+
+	const reply = engine.reply(text);
 
 	// POST REPLY FIRST (await required for serverless)
 	// Must await before returning to prevent container freeze
@@ -140,19 +154,21 @@ app.post('/', async (c) => {
 	// Vercel Node.js has 300s timeout, so we can await this directly
 	try {
 		// Enable learning for the save operation
-		hal.learning = config.learning === 'on';
+		if ('learning' in engine) {
+			(engine as any).learning = config.learning === 'on';
+		}
 
 		// Re-load brain in case it was modified by another request
-		const currentBrainData = await getBrain(null, groupId, config.personality);
+		const currentBrainData = await getBrain(null, groupId, config.engine, config.personality);
 		if (currentBrainData) {
-			hal.load(currentBrainData);
+			engine.load(currentBrainData);
 		}
 
 		// Learn from the current message
-		hal.reply(text);
-		const newBrainData = hal.save();
+		engine.learn(text);
+		const newBrainData = engine.save();
 		if (newBrainData) {
-			await saveBrain(null, groupId, config.personality, newBrainData);
+			await saveBrain(null, groupId, config.engine, config.personality, newBrainData);
 		}
 	} catch (err) {
 		console.error('Learning failed:', err);
@@ -170,10 +186,14 @@ const PERSONALITIES = [
 	'startrek', 'starwars'
 ];
 
+// Available engines (can be extended)
+const ENGINES = ['megahal']; // Add more engines here as they become available
+
 const CONFIG_COMMANDS = [
 	{ num: 1, name: 'personality', desc: 'Change the bot personality', usage: '!personality <name>' },
 	{ num: 2, name: 'learning', desc: 'Toggle learning on/off', usage: '!learning <on|off>' },
 	{ num: 3, name: 'prefix', desc: 'Set command prefix', usage: '!prefix <character|none>' },
+	{ num: 4, name: 'engine', desc: 'Change the chat engine', usage: '!engine <name>' },
 ];
 
 async function handleAdminCommand(c: any, body: GroupMeMessage, config: GroupConfig, botId: string) {
@@ -281,6 +301,35 @@ async function handleAdminCommand(c: any, body: GroupMeMessage, config: GroupCon
 		config.prefix = arg;
 		await saveGroupConfig(null, body.group_id, config);
 		await postMessage(botId, `✅ Prefix set to *${arg}*`);
+		return c.text('OK');
+	}
+
+	if (cmd === 'engine') {
+		if (!arg) {
+			// Show engine selection menu
+			let replyText = '⚙️ *Chat Engine Selection*\n\n';
+			replyText += `Current: *${config.engine}*\n\n`;
+			replyText += 'Reply with a number to select:\n\n';
+			ENGINES.forEach((e, i) => {
+				const marker = e === config.engine ? ' ✅' : '';
+				replyText += `${i + 1}. ${e}${marker}\n`;
+			});
+			await postMessage(botId, replyText);
+			return c.text('OK');
+		}
+		if (!ENGINES.includes(arg)) {
+			// Invalid engine, show menu
+			let replyText = `❌ Unknown engine: *${arg}*\n\n`;
+			replyText += 'Available engines:\n\n';
+			ENGINES.forEach((e, i) => {
+				replyText += `${i + 1}. ${e}\n`;
+			});
+			await postMessage(botId, replyText);
+			return c.text('OK');
+		}
+		config.engine = arg;
+		await saveGroupConfig(null, body.group_id, config);
+		await postMessage(botId, `✅ Engine changed to *${arg}*`);
 		return c.text('OK');
 	}
 
