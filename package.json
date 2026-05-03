@@ -15,11 +15,11 @@
     "@types/jszip": "^3.4.0",
     "@types/node": "^25.6.0",
     "typescript": "^5.5.2",
-    "vitest": "~3.2.0",
-    "wrangler": "^4.87.0"
+    "vitest": "~3.2.0"
   },
   "dependencies": {
     "hono": "^4.12.16",
-    "jszip": "^3.10.1"
+    "jszip": "^3.10.1",
+    "wrangler": "^4.87.0"
   }
 }
