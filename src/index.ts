@@ -116,22 +116,27 @@ app.post('/', async (c) => {
 
 	const reply = hal.reply(text);
 
-	// POST REPLY FIRST (Early Reply pattern for serverless)
-	// This responds to GroupMe quickly, before the heavy save operation
+	// POST REPLY FIRST (await required for serverless)
+	// Must await before returning to prevent container freeze
 	if (reply) {
-		fetch('https://api.groupme.com/v3/bots/post', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				bot_id: botId,
-				text: reply,
-			}),
-		}).catch((err) => console.error('Failed to post reply:', err));
+		try {
+			await fetch('https://api.groupme.com/v3/bots/post', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					bot_id: botId,
+					text: reply,
+				}),
+			});
+			console.log('Successfully posted reply to GroupMe');
+		} catch (err) {
+			console.error('Failed to post reply:', err);
+		}
 	}
 
-	// Learning and save - run after reply is sent
+	// Learning and save - run after reply is actually sent
 	// Vercel Node.js has 300s timeout, so we can await this directly
 	try {
 		// Enable learning for the save operation
