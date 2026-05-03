@@ -162,10 +162,44 @@ app.post('/', async (c) => {
 	return c.text('OK');
 });
 
+// Interactive config commands
+const CONFIG_COMMANDS = [
+	{ num: 1, name: 'personality', desc: 'Change the bot personality', usage: '!personality <name>' },
+	{ num: 2, name: 'learning', desc: 'Toggle learning on/off', usage: '!learning <on|off>' },
+	{ num: 3, name: 'prefix', desc: 'Set command prefix', usage: '!prefix <character|none>' },
+];
+
 async function handleAdminCommand(c: any, body: GroupMeMessage, config: GroupConfig, botId: string) {
-	const parts = body.text!.split(' ');
+	const text = body.text || '';
+	const parts = text.split(' ');
 	const cmd = parts[0].slice(1).toLowerCase(); // remove '!'
 	const arg = parts[1]?.toLowerCase();
+
+	// !config - show interactive list of commands
+	if (cmd === 'config') {
+		let replyText = '⚙️ *Config Commands*\n\n';
+		replyText += 'Reply with a number for more info:\n\n';
+		for (const com of CONFIG_COMMANDS) {
+			replyText += `${com.num}. ${com.name} - ${com.desc}\n`;
+		}
+		replyText += '\nOr use directly: !<command> <value>';
+
+		await postMessage(botId, replyText);
+		return c.text('OK');
+	}
+
+	// !{number} - show help for that command
+	const num = parseInt(cmd, 10);
+	if (!isNaN(num) && num >= 1 && num <= CONFIG_COMMANDS.length) {
+		const com = CONFIG_COMMANDS[num - 1];
+		let replyText = `*${com.name.toUpperCase()}*\n`;
+		replyText += `${com.desc}\n\n`;
+		replyText += `Current: ${config[com.name as keyof GroupConfig]}\n`;
+		replyText += `Usage: ${com.usage}`;
+
+		await postMessage(botId, replyText);
+		return c.text('OK');
+	}
 
 	let replyText = 'Unknown admin command.';
 
@@ -184,6 +218,12 @@ async function handleAdminCommand(c: any, body: GroupMeMessage, config: GroupCon
 	}
 
 	// Send the confirmation message
+	await postMessage(botId, replyText);
+
+	return c.text('Admin command handled');
+}
+
+async function postMessage(botId: string, text: string) {
 	await fetch('https://api.groupme.com/v3/bots/post', {
 		method: 'POST',
 		headers: {
@@ -191,11 +231,9 @@ async function handleAdminCommand(c: any, body: GroupMeMessage, config: GroupCon
 		},
 		body: JSON.stringify({
 			bot_id: botId,
-			text: replyText,
+			text: text,
 		}),
 	});
-
-	return c.text('Admin command handled');
 }
 
 // Export for Vercel Node.js runtime
