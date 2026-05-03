@@ -2,6 +2,7 @@ import { Buffer } from "node:buffer";
 /// <reference types="@cloudflare/workers-types" />
 import { Hono } from 'hono';
 import { MegaHAL } from './megahal/megahal';
+import './megahal/personalities';
 
 export type Bindings = {
 	MEGAHAL_KV: KVNamespace;
@@ -60,14 +61,17 @@ export interface GroupMeMessage {
 
 app.post('/', async (c) => {
 	const body = await c.req.json<GroupMeMessage>();
+	console.log(`Received message from ${body.name}: ${body.text}`); // LOG 1
 
 	// Phase 3: Anti-Loop
 	if (body.sender_type === 'bot' || body.sender_type === 'system') {
+		console.log("Ignoring bot/system message");
 		return c.text('Ignored bot/system message');
 	}
 
 	const groupId = body.group_id;
 	const botId = c.env[`BOT_ID_${groupId}`];
+	console.log(`Group ID: ${groupId}, Bot ID found: ${!!botId}`); // LOG 2
 
 	// Ignore if no bot_id is configured for this group
 	if (!botId) {
@@ -76,6 +80,7 @@ app.post('/', async (c) => {
 
 	// Phase 3: Load config
 	const config = await getGroupConfig(c.env.MEGAHAL_KV, groupId);
+	console.log(`Prefix expected: ${config.prefix}`); // LOG 3
 
 	// Phase 4 command interception hook placeholder
 	if (body.text?.startsWith('!') && body.user_id === c.env.OWNER_USER_ID) {
