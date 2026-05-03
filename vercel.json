@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "functions": {
+    "src/index.ts": {
+      "runtime": "vercel-nodejs@20",
+      "memory": 1024,
+      "maxDuration": 300
+    }
+  },
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/src/index.ts" }
+  ]
+}
