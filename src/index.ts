@@ -2,7 +2,7 @@ import { Buffer } from "node:buffer";
 /// <reference types="@cloudflare/workers-types" />
 import { Hono } from 'hono';
 import { MegaHAL } from './megahal/megahal';
-import './megahal/personalities';
+// Note: personalities are now lazy-loaded, no need to import all of them
 
 export type Bindings = {
 	MEGAHAL_KV: KVNamespace;
@@ -100,8 +100,8 @@ app.post('/', async (c) => {
 		return c.text('Empty message after prefix');
 	}
 
-	// MegaHAL Processing
-	const hal = new MegaHAL(config.personality);
+	// MegaHAL Processing - use factory method for async lazy loading
+	const hal = await MegaHAL.create(config.personality);
 	hal.learning = config.learning === 'on';
 
 	// Try to load brain from KV
@@ -112,16 +112,10 @@ app.post('/', async (c) => {
 
 	const reply = hal.reply(text);
 
-	if (hal.learning) {
-		const newBrainData = hal.save();
-		if (newBrainData) {
-			await saveBrain(c.env.MEGAHAL_KV, groupId, config.personality, newBrainData);
-		}
-	}
-
+	// POST REPLY FIRST (Early Reply pattern for serverless)
+	// This responds to GroupMe quickly, before the heavy save operation
 	if (reply) {
-		// Post to GroupMe API
-		await fetch('https://api.groupme.com/v3/bots/post', {
+		fetch('https://api.groupme.com/v3/bots/post', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -130,9 +124,35 @@ app.post('/', async (c) => {
 				bot_id: botId,
 				text: reply,
 			}),
-		});
+		}).catch((err) => console.error('Failed to post reply:', err));
 	}
 
+	// Background learning and save - runs after response is sent
+	// This prevents the 10ms CPU timeout by moving heavy work outside main request
+	if (hal.learning) {
+		c.executionCtx.waitUntil(
+			(async () => {
+				try {
+					// Re-load brain in case it was modified by another request
+					const currentBrainData = await getBrain(c.env.MEGAHAL_KV, groupId, config.personality);
+					if (currentBrainData) {
+						hal.load(currentBrainData);
+					}
+
+					// Learn from the current message
+					hal.reply(text);
+					const newBrainData = hal.save();
+					if (newBrainData) {
+						await saveBrain(c.env.MEGAHAL_KV, groupId, config.personality, newBrainData);
+					}
+				} catch (err) {
+					console.error('Background learning failed:', err);
+				}
+			})()
+		);
+	}
+
+	// Return OK immediately - reply already sent and background task started
 	return c.text('OK');
 });
 

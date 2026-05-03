@@ -23,7 +23,18 @@ export class MegaHAL {
 		this.punc = new SoothPredictor(0);
 		this.brain = {};
 		this.dictionary = { '<error>': 0, '<fence>': 1, '<blank>': 2 };
-		this.become(personality || 'default');
+		// Note: become() is NOT called here - use create() factory method or call become() async
+		// This enables lazy loading of only the needed personality
+	}
+
+	/**
+	 * Factory method to create a MegaHAL instance with lazy-loaded personality.
+	 * Use this instead of constructor for async initialization.
+	 */
+	public static async create(personality?: string): Promise<MegaHAL> {
+		const instance = new MegaHAL(personality);
+		await instance.become(personality || 'default');
+		return instance;
 	}
 
 	/**
@@ -72,7 +83,43 @@ export class MegaHAL {
 		}
 	}
 
+	// Lazy loading: Map of personality names to their module loader functions
+	// Type 'any' used to avoid complex module type checking - module loads via side effect (addPersonality)
+	private static personalityModules: Record<string, () => Promise<any>> = {
+		aliens: () => import('./personalities/aliens'),
+		bill: () => import('./personalities/bill'),
+		caitsith: () => import('./personalities/caitsith'),
+		default: () => import('./personalities/default'),
+		ferris: () => import('./personalities/ferris'),
+		manson: () => import('./personalities/manson'),
+		pepys: () => import('./personalities/pepys'),
+		pulp: () => import('./personalities/pulp'),
+		scream: () => import('./personalities/scream'),
+		sherlock: () => import('./personalities/sherlock'),
+		startrek: () => import('./personalities/startrek'),
+		starwars: () => import('./personalities/starwars'),
+	};
+
 	private static personalities: Record<string, string[]> = {};
+
+	/**
+	 * Loads personality data dynamically (lazy loading).
+	 * Only the chosen personality is imported, not all of them.
+	 */
+	private static async loadPersonality(name: string): Promise<string[]> {
+		if (this.personalities[name]) {
+			return this.personalities[name];
+		}
+
+		const loadFn = this.personalityModules[name];
+		if (!loadFn) {
+			throw new Error('No such personality');
+		}
+
+		const module = await loadFn();
+		this.personalities[name] = module.default;
+		return this.personalities[name];
+	}
 
 	/**
 	 * Adds a new personality with the given name and data.
@@ -88,7 +135,7 @@ export class MegaHAL {
 	 * Lists all available personalities.
 	 */
 	public static list(): string[] {
-		return Object.keys(this.personalities);
+		return Object.keys(this.personalityModules);
 	}
 
 	/**
@@ -170,13 +217,12 @@ export class MegaHAL {
 
 	/**
 	 * Changes the current personality and clears previous state.
+	 * Loads personality data lazily (async).
 	 */
-	public become(name = 'default'): void {
-		if (!MegaHAL.personalities[name]) {
-			throw new Error('No such personality');
-		}
+	public async become(name = 'default'): Promise<void> {
+		const personalityData = await MegaHAL.loadPersonality(name);
 		this.clear();
-		this._train(MegaHAL.personalities[name]);
+		this._train(personalityData);
 	}
 
 	/**
