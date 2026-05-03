@@ -1,7 +1,7 @@
 import { Buffer } from "node:buffer";
-import { Keywords } from './keywords';
-import { SoothPredictor } from './sooth';
-import { contextHash, notNull, zip } from './utils';
+import { Keywords } from './keywords.js';
+import { SoothPredictor } from './sooth.js';
+import { contextHash, notNull, zip } from './utils.js';
 
 export class MegaHAL {
 	public learning: boolean;
@@ -86,18 +86,18 @@ export class MegaHAL {
 	// Lazy loading: Map of personality names to their module loader functions
 	// Type 'any' used to avoid complex module type checking - module loads via side effect (addPersonality)
 	private static personalityModules: Record<string, () => Promise<any>> = {
-		aliens: () => import('./personalities/aliens'),
-		bill: () => import('./personalities/bill'),
-		caitsith: () => import('./personalities/caitsith'),
-		default: () => import('./personalities/default'),
-		ferris: () => import('./personalities/ferris'),
-		manson: () => import('./personalities/manson'),
-		pepys: () => import('./personalities/pepys'),
-		pulp: () => import('./personalities/pulp'),
-		scream: () => import('./personalities/scream'),
-		sherlock: () => import('./personalities/sherlock'),
-		startrek: () => import('./personalities/startrek'),
-		starwars: () => import('./personalities/starwars'),
+		aliens: () => import('./personalities/aliens.js'),
+		bill: () => import('./personalities/bill.js'),
+		caitsith: () => import('./personalities/caitsith.js'),
+		default: () => import('./personalities/default.js'),
+		ferris: () => import('./personalities/ferris.js'),
+		manson: () => import('./personalities/manson.js'),
+		pepys: () => import('./personalities/pepys.js'),
+		pulp: () => import('./personalities/pulp.js'),
+		scream: () => import('./personalities/scream.js'),
+		sherlock: () => import('./personalities/sherlock.js'),
+		startrek: () => import('./personalities/startrek.js'),
+		starwars: () => import('./personalities/starwars.js'),
 	};
 
 	private static personalities: Record<string, string[]> = {};

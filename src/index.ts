@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import { MegaHAL } from './megahal/megahal';
+import { MegaHAL } from './megahal/megahal.js';
 // Note: personalities are now lazy-loaded, no need to import all of them
 
 // Vercel Node.js runtime - use process.env instead of Bindings
