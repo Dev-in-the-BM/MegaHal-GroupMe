@@ -1,5 +1,4 @@
 import { Hono } from 'hono';
-import { handle } from 'hono/vercel';
 import { MegaHAL } from './megahal/megahal';
 // Note: personalities are now lazy-loaded, no need to import all of them
 
@@ -194,6 +193,5 @@ async function handleAdminCommand(c: any, body: GroupMeMessage, config: GroupCon
 	return c.text('Admin command handled');
 }
 
-// Export for Vercel
-export const POST = handle(app);
-export const GET = handle(app);
+// Export for Vercel Node.js runtime
+export default app;

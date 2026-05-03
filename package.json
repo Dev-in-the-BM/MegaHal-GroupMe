@@ -2,6 +2,9 @@
   "name": "app",
   "version": "0.0.0",
   "private": true,
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "deploy": "wrangler deploy",
     "dev": "wrangler dev",
