@@ -117,7 +117,22 @@ export class MegaHAL {
 		}
 
 		const module = await loadFn();
-		this.personalities[name] = module.default;
+		
+		// FIX: Personality files use side effects (MegaHAL.addPersonality)
+		// After importing, check if the personality was added by the side effect
+		if (this.personalities[name]) {
+			return this.personalities[name];
+		}
+		
+		// Fallback: Try explicit exports (for compatibility)
+		const data = module.default || (module && module[Object.keys(module)[0]]);
+		
+		if (!data || !Array.isArray(data)) {
+			console.error(`Personality '${name}' did not export an array. Exports found:`, Object.keys(module));
+			throw new Error(`Invalid personality data for ${name}`);
+		}
+
+		this.personalities[name] = data;
 		return this.personalities[name];
 	}
 
