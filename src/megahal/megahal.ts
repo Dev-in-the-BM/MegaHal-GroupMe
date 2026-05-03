@@ -154,47 +154,30 @@ export class MegaHAL {
 	}
 
 	/**
-	 * Saves the current state to a file.
+	 * Saves the current state to a Uint8Array using JSON serialization.
+	 * Uses TextEncoder for efficient encoding to KV.
 	 */
 	public save(): Uint8Array | null {
 		try {
+			const models = ['seed', 'fore', 'back', 'case', 'punc'] as const;
+			const modelData: Record<string, unknown> = {};
+
+			for (const name of models) {
+				const buf = this[name].save();
+				if (!buf) throw new Error(`Failed to save ${name}`);
+				// Parse the JSON string from each model's save output
+				modelData[name] = JSON.parse(new TextDecoder().decode(buf));
+			}
+
 			const data = {
 				version: 'MH11',
 				learning: this.learning,
 				brain: this.brain,
 				dictionary: this.dictionary,
+				models: modelData,
 			};
 
-			const dictBuffer = Buffer.from(JSON.stringify(data), 'utf8');
-
-			const models = ['seed', 'fore', 'back', 'case', 'punc'] as const;
-			const modelBuffers = models.map((name) => {
-				const buf = this[name].save();
-				if (!buf) throw new Error(`Failed to save ${name}`);
-				return buf;
-			});
-
-			let totalSize = 4 + dictBuffer.length;
-			for (const buf of modelBuffers) {
-				totalSize += 4 + buf.length;
-			}
-
-			const outBuffer = Buffer.alloc(totalSize);
-			let offset = 0;
-
-			outBuffer.writeInt32LE(dictBuffer.length, offset);
-			offset += 4;
-			dictBuffer.copy(outBuffer, offset);
-			offset += dictBuffer.length;
-
-			for (const buf of modelBuffers) {
-				outBuffer.writeInt32LE(buf.length, offset);
-				offset += 4;
-				Buffer.from(buf).copy(outBuffer, offset);
-				offset += buf.length;
-			}
-
-			return new Uint8Array(outBuffer.buffer, outBuffer.byteOffset, outBuffer.byteLength);
+			return new TextEncoder().encode(JSON.stringify(data));
 		} catch (e) {
 			console.error(e);
 			return null;
@@ -202,30 +185,21 @@ export class MegaHAL {
 	}
 
 	/**
-	 * Loads the state from a file.
+	 * Loads the state from a Uint8Array using JSON deserialization.
+	 * Uses TextDecoder for efficient decoding from KV.
 	 */
 	public load(data: Uint8Array): void {
-		const buffer = Buffer.from(data);
-		let offset = 0;
+		const jsonString = new TextDecoder().decode(data);
+		const parsed = JSON.parse(jsonString);
 
-		const dictSize = buffer.readInt32LE(offset);
-		offset += 4;
-		const dictJson = buffer.toString('utf8', offset, offset + dictSize);
-		offset += dictSize;
-
-		const dict = JSON.parse(dictJson);
-		this.learning = dict.learning;
-		this.brain = dict.brain;
-		this.dictionary = dict.dictionary;
+		this.learning = parsed.learning;
+		this.brain = parsed.brain;
+		this.dictionary = parsed.dictionary;
 
 		const models = ['seed', 'fore', 'back', 'case', 'punc'] as const;
 		for (const name of models) {
-			const modelSize = buffer.readInt32LE(offset);
-			offset += 4;
-
-			const modelData = new Uint8Array(buffer.buffer, buffer.byteOffset + offset, modelSize);
-			offset += modelSize;
-
+			const modelJson = JSON.stringify(parsed.models[name]);
+			const modelData = new TextEncoder().encode(modelJson);
 			this[name].load(modelData);
 		}
 	}

@@ -102,7 +102,8 @@ app.post('/', async (c) => {
 
 	// MegaHAL Processing - Instantiate WITHOUT auto-training
 	const hal = new MegaHAL(config.personality);
-	hal.learning = config.learning === 'on';
+	// Disable learning during main request loop to avoid Markov CPU drain
+	hal.learning = false;
 
 	// Try to load brain from KV first!
 	const brainData = await getBrain(c.env.MEGAHAL_KV, groupId, config.personality);
@@ -132,28 +133,29 @@ app.post('/', async (c) => {
 
 	// Background learning and save - runs after response is sent
 	// This prevents the 10ms CPU timeout by moving heavy work outside main request
-	if (hal.learning) {
-		c.executionCtx.waitUntil(
-			(async () => {
-				try {
-					// Re-load brain in case it was modified by another request
-					const currentBrainData = await getBrain(c.env.MEGAHAL_KV, groupId, config.personality);
-					if (currentBrainData) {
-						hal.load(currentBrainData);
-					}
+	c.executionCtx.waitUntil(
+		(async () => {
+			try {
+				// Enable learning for the background save operation
+				hal.learning = config.learning === 'on';
 
-					// Learn from the current message
-					hal.reply(text);
-					const newBrainData = hal.save();
-					if (newBrainData) {
-						await saveBrain(c.env.MEGAHAL_KV, groupId, config.personality, newBrainData);
-					}
-				} catch (err) {
-					console.error('Background learning failed:', err);
+				// Re-load brain in case it was modified by another request
+				const currentBrainData = await getBrain(c.env.MEGAHAL_KV, groupId, config.personality);
+				if (currentBrainData) {
+					hal.load(currentBrainData);
 				}
-			})()
-		);
-	}
+
+				// Learn from the current message
+				hal.reply(text);
+				const newBrainData = hal.save();
+				if (newBrainData) {
+					await saveBrain(c.env.MEGAHAL_KV, groupId, config.personality, newBrainData);
+				}
+			} catch (err) {
+				console.error('Background learning failed:', err);
+			}
+		})()
+	);
 
 	// Return OK immediately - reply already sent and background task started
 	return c.text('OK');

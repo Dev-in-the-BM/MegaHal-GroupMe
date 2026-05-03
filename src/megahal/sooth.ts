@@ -29,44 +29,20 @@ export class SoothPredictor {
 	}
 
 	/**
-	 * Saves the predictor state to a file.
+	 * Saves the predictor state to a Uint8Array using JSON serialization.
+	 * Uses TextEncoder for efficient encoding.
 	 */
 	public save(): Uint8Array | null {
 		try {
-			let totalSize = 4 + 8;
-			for (let i = 0; i < this.contextsSize; i++) {
-				totalSize += 12;
-				totalSize += this.contexts[i].statisticsSize * 8;
-			}
+			const data = {
+				magic: 'MH11',
+				errorEvent: this.errorEvent,
+				contextsSize: this.contextsSize,
+				contexts: this.contexts.slice(0, this.contextsSize),
+			};
 
-			const buffer = Buffer.alloc(totalSize);
-			let offset = 0;
-
-			buffer.write('MH11', offset, 4, 'utf8');
-			offset += 4;
-			buffer.writeInt32LE(this.errorEvent, offset);
-			offset += 4;
-			buffer.writeInt32LE(this.contextsSize, offset);
-			offset += 4;
-
-			for (let i = 0; i < this.contextsSize; i++) {
-				const context = this.contexts[i];
-				buffer.writeInt32LE(context.id, offset);
-				offset += 4;
-				buffer.writeInt32LE(context.count, offset);
-				offset += 4;
-				buffer.writeInt32LE(context.statisticsSize, offset);
-				offset += 4;
-
-				for (let j = 0; j < context.statisticsSize; j++) {
-					buffer.writeInt32LE(context.statistics[j].event, offset);
-					offset += 4;
-					buffer.writeInt32LE(context.statistics[j].count, offset);
-					offset += 4;
-				}
-			}
-
-			return new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength);
+			const jsonString = JSON.stringify(data);
+			return new TextEncoder().encode(jsonString);
 		} catch (error) {
 			console.error('Error saving SoothPredictor:', error);
 			return null;
@@ -74,44 +50,28 @@ export class SoothPredictor {
 	}
 
 	/**
-	 * Loads the predictor state from a file.
+	 * Loads the predictor state from a Uint8Array using JSON deserialization.
+	 * Uses TextDecoder for efficient decoding.
 	 */
 	public load(data: Uint8Array): boolean {
 		try {
-			const fileBuffer = Buffer.from(data);
+			const jsonString = new TextDecoder().decode(data);
+			const parsed = JSON.parse(jsonString);
 
-			if (fileBuffer.toString('utf8', 0, 4) !== 'MH11') {
+			if (parsed.magic !== 'MH11') {
 				return false;
 			}
 
 			this.clear();
 
-			this.errorEvent = fileBuffer.readInt32LE(4);
-			this.contextsSize = fileBuffer.readInt32LE(8);
+			this.errorEvent = parsed.errorEvent;
+			this.contextsSize = parsed.contextsSize;
 
 			if (this.contextsSize === 0) {
 				return true;
 			}
 
-			let offset = 12;
-			this.contexts = new Array(this.contextsSize);
-
-			for (let i = 0; i < this.contextsSize; i++) {
-				const id = fileBuffer.readInt32LE(offset);
-				const count = fileBuffer.readInt32LE(offset + 4);
-				const statisticsSize = fileBuffer.readInt32LE(offset + 8);
-				offset += 12;
-
-				const statistics = new Array(statisticsSize);
-				for (let j = 0; j < statisticsSize; j++) {
-					const event = fileBuffer.readInt32LE(offset);
-					const count = fileBuffer.readInt32LE(offset + 4);
-					statistics[j] = { event, count };
-					offset += 8;
-				}
-
-				this.contexts[i] = { id, count, statisticsSize, statistics };
-			}
+			this.contexts = parsed.contexts;
 
 			return true;
 		} catch (error) {
