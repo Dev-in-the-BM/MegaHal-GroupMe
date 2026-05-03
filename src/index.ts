@@ -163,6 +163,13 @@ app.post('/', async (c) => {
 });
 
 // Interactive config commands
+// Note: personalities are lazy-loaded via MegaHAL, but we list them here for the menu
+const PERSONALITIES = [
+	'aliens', 'bill', 'caitsith', 'default', 'ferris',
+	'manson', 'pepys', 'pulp', 'scream', 'sherlock',
+	'startrek', 'starwars'
+];
+
 const CONFIG_COMMANDS = [
 	{ num: 1, name: 'personality', desc: 'Change the bot personality', usage: '!personality <name>' },
 	{ num: 2, name: 'learning', desc: 'Toggle learning on/off', usage: '!learning <on|off>' },
@@ -201,26 +208,85 @@ async function handleAdminCommand(c: any, body: GroupMeMessage, config: GroupCon
 		return c.text('OK');
 	}
 
-	let replyText = 'Unknown admin command.';
-
-	if (cmd === 'personality' && arg) {
+	// --- Interactive submenu handlers ---
+	if (cmd === 'personality') {
+		if (!arg) {
+			// Show personality selection menu
+			let replyText = '🎭 *Personality Selection*\n\n';
+			replyText += `Current: *${config.personality}*\n\n`;
+			replyText += 'Reply with a number to select:\n\n';
+			PERSONALITIES.forEach((p, i) => {
+				const marker = p === config.personality ? ' ✅' : '';
+				replyText += `${i + 1}. ${p}${marker}\n`;
+			});
+			await postMessage(botId, replyText);
+			return c.text('OK');
+		}
+		if (!PERSONALITIES.includes(arg)) {
+			// Invalid personality, show menu
+			let replyText = `❌ Unknown personality: *${arg}*\n\n`;
+			replyText += 'Available personalities:\n\n';
+			PERSONALITIES.forEach((p, i) => {
+				replyText += `${i + 1}. ${p}\n`;
+			});
+			await postMessage(botId, replyText);
+			return c.text('OK');
+		}
 		config.personality = arg;
-		replyText = `Personality changed to ${arg}`;
 		await saveGroupConfig(null, body.group_id, config);
-	} else if (cmd === 'learning' && (arg === 'on' || arg === 'off')) {
-		config.learning = arg;
-		replyText = `Learning is now ${arg}`;
-		await saveGroupConfig(null, body.group_id, config);
-	} else if (cmd === 'prefix' && arg) {
-		config.prefix = arg;
-		replyText = `Prefix set to ${arg}`;
-		await saveGroupConfig(null, body.group_id, config);
+		await postMessage(botId, `✅ Personality changed to *${arg}*`);
+		return c.text('OK');
 	}
 
-	// Send the confirmation message
-	await postMessage(botId, replyText);
+	if (cmd === 'learning') {
+		if (!arg) {
+			let replyText = '📚 *Learning Options*\n\n';
+			replyText += `Current: *${config.learning}*\n\n`;
+			replyText += 'Reply with a number to select:\n\n';
+			replyText += `1. on - Bot learns from messages\n`;
+			replyText += `2. off - Bot won't learn\n`;
+			await postMessage(botId, replyText);
+			return c.text('OK');
+		}
+		if (arg !== 'on' && arg !== 'off') {
+			let replyText = `❌ Invalid option: *${arg}*\n\n`;
+			replyText += 'Options:\n';
+			replyText += `1. on - Enable learning\n`;
+			replyText += `2. off - Disable learning\n`;
+			await postMessage(botId, replyText);
+			return c.text('OK');
+		}
+		config.learning = arg;
+		await saveGroupConfig(null, body.group_id, config);
+		await postMessage(botId, `✅ Learning is now *${arg}*`);
+		return c.text('OK');
+	}
 
-	return c.text('Admin command handled');
+	if (cmd === 'prefix') {
+		if (!arg) {
+			let replyText = '🔤 *Prefix Options*\n\n';
+			replyText += `Current: *${config.prefix === 'none' ? 'none (no prefix)' : config.prefix}*\n\n`;
+			replyText += 'Reply with a number to select:\n\n';
+			replyText += '1. $ - Use $ as prefix\n';
+			replyText += '2. ! - Use ! as prefix\n';
+			replyText += '3. none - No prefix required\n';
+			replyText += '4. custom - Set a custom prefix\n';
+			await postMessage(botId, replyText);
+			return c.text('OK');
+		}
+		if (arg === 'custom') {
+			await postMessage(botId, '💬 Send your custom prefix (single character or "none")');
+			return c.text('OK');
+		}
+		config.prefix = arg;
+		await saveGroupConfig(null, body.group_id, config);
+		await postMessage(botId, `✅ Prefix set to *${arg}*`);
+		return c.text('OK');
+	}
+
+	// Unknown command
+	await postMessage(botId, '❓ Unknown command. Use !config for available commands.');
+	return c.text('OK');
 }
 
 async function postMessage(botId: string, text: string) {
