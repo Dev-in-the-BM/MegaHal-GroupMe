@@ -100,14 +100,17 @@ app.post('/', async (c) => {
 		return c.text('Empty message after prefix');
 	}
 
-	// MegaHAL Processing - use factory method for async lazy loading
-	const hal = await MegaHAL.create(config.personality);
+	// MegaHAL Processing - Instantiate WITHOUT auto-training
+	const hal = new MegaHAL(config.personality);
 	hal.learning = config.learning === 'on';
 
-	// Try to load brain from KV
+	// Try to load brain from KV first!
 	const brainData = await getBrain(c.env.MEGAHAL_KV, groupId, config.personality);
 	if (brainData) {
-		hal.load(brainData);
+		hal.load(brainData); // Fast binary load (Takes < 1ms)
+	} else {
+		// ONLY train from scratch if the brain doesn't exist in KV yet
+		await hal.become(config.personality);
 	}
 
 	const reply = hal.reply(text);

@@ -1,6 +1,6 @@
 import { MegaHAL } from '../megahal';
 
-MegaHAL.addPersonality('default', [
+const defaultPersonality: string[] = [
 	'Hello there, it is indeed a great pleasure to meet you.',
 	"G'day mate, it is nice to meet you.",
 	"Hi there.  We're having some nice weather at the moment.",
@@ -350,4 +350,10 @@ MegaHAL.addPersonality('default', [
 	'Every man is made of two opinions.  Every woman has a second half.',
 	'I had the strangest dream... I dreamed I killed you again.',
 	'The sun is a mass of incandescent gas, a gigantic nuclear furnace.',
-]);
+];
+
+// Register personality via side effect (for backwards compatibility)
+MegaHAL.addPersonality('default', defaultPersonality);
+
+// Export for lazy loading
+export default defaultPersonality;
