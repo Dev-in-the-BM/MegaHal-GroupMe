@@ -1,4 +1,4 @@
-import { notNull } from './utils';
+import { notNull } from './utils.js';
 
 export class Keywords {
 	static extract(words: string[] | null | undefined): Set<string | null> {

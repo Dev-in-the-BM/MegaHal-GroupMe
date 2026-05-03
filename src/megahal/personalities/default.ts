@@ -1,4 +1,4 @@
-import { MegaHAL } from '../megahal';
+import { MegaHAL } from '../megahal.js';
 
 const defaultPersonality: string[] = [
 	'Hello there, it is indeed a great pleasure to meet you.',
