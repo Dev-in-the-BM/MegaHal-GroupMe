@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@hono/node-server": "^2.0.1",
+    "elizabot": "^0.0.3",
     "hono": "^4.12.16",
     "jszip": "^3.10.1",
     "rivescript": "^2.2.1",

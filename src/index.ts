@@ -4,6 +4,8 @@ import { ChatEngineRegistry } from './engines/index.js';
 import './engines/megahal/index.js';
 // Import RiveScript engine to register it
 import './engines/rivescript/index.js';
+// Import ElizaBot engine to register it
+import './engines/elizabot/index.js';
 import type { ChatEngine } from './engines/types.js';
 import { AVAILABLE_BRAINS as RIVESCRIPT_BRAINS } from './engines/rivescript/brains.js';
 
@@ -190,7 +192,7 @@ const PERSONALITIES = [
 ];
 
 // Available engines (can be extended)
-const ENGINES = ['megahal', 'rivescript']; // Add more engines here as they become available
+const ENGINES = ['megahal', 'rivescript', 'elizabot']; // Add more engines here as they become available
 
 const CONFIG_COMMANDS = [
 	{ num: 1, name: 'personality', desc: 'Change the bot personality', usage: '!personality <name>' },
