@@ -82,7 +82,7 @@ const BRAIN_AIDEN = `// ===== about-aiden.rive =====
 `;
 
 // ===== ALICE Brain =====
-import ALICE_BRAIN from './alice_brain.rive';
+import ALICE_BRAIN from './alice_brain.js';
 
 export { BRAIN_AIDEN, ALICE_BRAIN };
 

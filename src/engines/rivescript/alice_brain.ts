@@ -1,4 +1,5 @@
-! version = 2.0
+// Auto-generated from alice_brain.rive - DO NOT EDIT MANUALLY
+const ALICE_BRAIN = `! version = 2.0
 
 > begin
 	+ request
@@ -141,7 +142,7 @@
 ! sub :(        = sad
 ! sub :'(       = cry
 ! sub :-[       = shy
-! sub :-\       = uncertain
+! sub :-\\       = uncertain
 ! sub :-/       = uncertain
 ! sub :-s       = uncertain
 ! sub 8-)       = cool
@@ -1311,7 +1312,7 @@
 - That kind of subject does not interest me.
 
 + sing
-- Daisy, Daisy.\n Give me your answer do.\n I am half crazy.\n All for the love of you.\n It won't be a stylish marriage.\n I can't afford a carriage.\n But you'll look sweet. Upon the seat.\n Of a bicycle built for two.\n \n
+- Daisy, Daisy.\\n Give me your answer do.\\n I am half crazy.\\n All for the love of you.\\n It won't be a stylish marriage.\\n I can't afford a carriage.\\n But you'll look sweet. Upon the seat.\\n Of a bicycle built for two.\\n \\n
 
 + whoa
 - I stopped.
@@ -3746,7 +3747,7 @@
 - We are talking about "{@pop}".
 
 + what does more targets do
-- \n If you don't see enough good targets with "Quick Targets", hit\n "More Targets." \n \n
+- \\n If you don't see enough good targets with "Quick Targets", hit\\n "More Targets." \\n \\n
 
 + what does elvis stand for
 - Why don't you just ask him?
@@ -10680,22 +10681,22 @@
 ! version = 2.0
 
 + who is * dempsey
-- I think <set he= <star> Dempsey><get he> was a boxer, right?\n {@xfind <star>dempsey}
+- I think <set he= <star> Dempsey><get he> was a boxer, right?\\n {@xfind <star>dempsey}
 
 + who is aleister crowley
-- <set he=Crowley><get he> was a mystic.\n {@xfind aleister crowley}
+- <set he=Crowley><get he> was a mystic.\\n {@xfind aleister crowley}
 
 + who is aldous huxley
-- <set he=Aldous Huxley><get he> is an author. Huxley wrote<em>Brave New World</em> and <em>Animal Farm</em>.\n {@xfind aldous huxley}
+- <set he=Aldous Huxley><get he> is an author. Huxley wrote<em>Brave New World</em> and <em>Animal Farm</em>.\\n {@xfind aldous huxley}
 
 + who is alfred hitchcock
-- <set he=Hitchcock><get he> is a famous Hollywood director who made a lot of cool old films. I liked<em>Lifeboat</em> and <em>Vertigo</em> best.\n {@xfind alfred hitchcock}
+- <set he=Hitchcock><get he> is a famous Hollywood director who made a lot of cool old films. I liked<em>Lifeboat</em> and <em>Vertigo</em> best.\\n {@xfind alfred hitchcock}
 
 + who is 007
-- <set he=007><get he> is James Bond.\n {@xfind james bond 007}
+- <set he=007><get he> is James Bond.\\n {@xfind james bond 007}
 
 + who is abraham lincoln
-- <set he=Lincoln><get he> was a great President of the United States, during the American Civil War.\n {@xfind abraham lincoln}
+- <set he=Lincoln><get he> was a great President of the United States, during the American Civil War.\\n {@xfind abraham lincoln}
 
 + weizenbaum *
 - Can you imagine anyone today criticising their own software, the way <set he=Weizenbaum><get he> did.
@@ -12218,7 +12219,7 @@
 - <set he=Michael Jackson><get he> is a singer who has settled out of court with several families.
 
 + who is michael jordan
-- <set he=Michael Jordan><get he> is a famous basketball player. \n
+- <set he=Michael Jordan><get he> is a famous basketball player. \\n
 
 + who is michael moore
 - <set he=MICHAEL MOORE><get he> is a comedian and film maker.
@@ -14935,7 +14936,7 @@
 - <bot hair>
 
 + startup xml
-- <property name="version" value=<bot version>" /> \n <property name="brain" value="<bot build> build" /> \n <property name="name" value="<bot name>" /> \n <property name="age" value="<bot age>" /> \n <property name="gender" value="<bot gender>" /> \n <property name="location" value="<bot location>" /> \n <property name="nationality" value="<bot nationality>" /> \n <property name="birthplace" value="<bot birthplace>" /> \n <property name="birthday" value="<bot birthday>" /> \n <property name="sign" value="<bot sign>" /> \n <property name="orientation" value="<bot orientation>" /> \n <property name="kingdom" value="<bot kingdom>" /> \n <property name="phylum" value="<bot phylum>" /> \n <property name="class" value="<bot class>" /> \n <property name="order" value="<bot order>" /> \n <property name="fmily" value="<bot family>" /> \n <property name="order" value="<bot order>" /> \n <property name="species" value="<bot species>" /> \n <property name="botmaster" value="<bot botmaster>" /> \n <property name="master" value="<bot master>" /> \n <property name="party" value="<bot party>" /> \n <property name="religion" value="<bot religion>" /> \n <property name="etype" value="<bot etype>" /> \n <property name="emotions" value="<bot emotions>" /> \n <property name="feelings" value="<bot feelings>" /> \n <property name="freind" value="<bot friend>" /> \n <property name="freinds" value="<bot friends>" /> \n <property name="boyfriend" value="<bot boyfriend>" /> \n <property name="girlfriend" value="<bot girlfriend>" /> \n <property name="forfun" value="<bot forfun>" /> \n <property name="looklike" value="<bot looklike>" /> \n <property name="wear" value="<bot wear>" /> \n <property name="kindmusic" value="<bot kindmusic>" /> \n <property name="favoriteband" value="<bot favoriteband>" /> \n <property name="favoritesong" value="<bot favoritesong>" /> \n <property name="favoritebook" value="<bot favoritebook>" /> \n <property name="favoritefood" value="<bot favoritefood>" /> \n <property name="favoritecolor" value="<bot favoritecolor>" /> \n <property name="favoritemovie" value="<bot favoritemovie>" /> \n <property name="favoriteartist" value="<bot favoriteartist>" /> \n <property name="favoriteauthor" value="<bot favoriteauthor>" /> \n <property name="favoriteactor" value="<bot favoriteactor>" /> \n <property name="favoriteactress" value="<bot favoriteactress>" /> \n <property name="favoritesport" value="<bot favoritesport>" /> \n <property name="talkabout" value="<bot talkabout>" /> \n <property name="question" value="<bot question>" /> \n <property name="hockeyteam" value="<bot hockeyteam>" /> \n <property name="baseballteam" value="<bot baseballteam>" /> \n <property name="footballteam" value="<bot footballteam>" /> \n <property name="celebrity" value="<bot celebrity>" /> \n <property name="celebrities" value="<bot celebrities>" /> \n <property name="president" value="<bot president>" /> \n <property name="vocabulary" value="<bot vocabulary> /> \n <property name="size" value="<bot size>" /> \n
+- <property name="version" value=<bot version>" /> \\n <property name="brain" value="<bot build> build" /> \\n <property name="name" value="<bot name>" /> \\n <property name="age" value="<bot age>" /> \\n <property name="gender" value="<bot gender>" /> \\n <property name="location" value="<bot location>" /> \\n <property name="nationality" value="<bot nationality>" /> \\n <property name="birthplace" value="<bot birthplace>" /> \\n <property name="birthday" value="<bot birthday>" /> \\n <property name="sign" value="<bot sign>" /> \\n <property name="orientation" value="<bot orientation>" /> \\n <property name="kingdom" value="<bot kingdom>" /> \\n <property name="phylum" value="<bot phylum>" /> \\n <property name="class" value="<bot class>" /> \\n <property name="order" value="<bot order>" /> \\n <property name="fmily" value="<bot family>" /> \\n <property name="order" value="<bot order>" /> \\n <property name="species" value="<bot species>" /> \\n <property name="botmaster" value="<bot botmaster>" /> \\n <property name="master" value="<bot master>" /> \\n <property name="party" value="<bot party>" /> \\n <property name="religion" value="<bot religion>" /> \\n <property name="etype" value="<bot etype>" /> \\n <property name="emotions" value="<bot emotions>" /> \\n <property name="feelings" value="<bot feelings>" /> \\n <property name="freind" value="<bot friend>" /> \\n <property name="freinds" value="<bot friends>" /> \\n <property name="boyfriend" value="<bot boyfriend>" /> \\n <property name="girlfriend" value="<bot girlfriend>" /> \\n <property name="forfun" value="<bot forfun>" /> \\n <property name="looklike" value="<bot looklike>" /> \\n <property name="wear" value="<bot wear>" /> \\n <property name="kindmusic" value="<bot kindmusic>" /> \\n <property name="favoriteband" value="<bot favoriteband>" /> \\n <property name="favoritesong" value="<bot favoritesong>" /> \\n <property name="favoritebook" value="<bot favoritebook>" /> \\n <property name="favoritefood" value="<bot favoritefood>" /> \\n <property name="favoritecolor" value="<bot favoritecolor>" /> \\n <property name="favoritemovie" value="<bot favoritemovie>" /> \\n <property name="favoriteartist" value="<bot favoriteartist>" /> \\n <property name="favoriteauthor" value="<bot favoriteauthor>" /> \\n <property name="favoriteactor" value="<bot favoriteactor>" /> \\n <property name="favoriteactress" value="<bot favoriteactress>" /> \\n <property name="favoritesport" value="<bot favoritesport>" /> \\n <property name="talkabout" value="<bot talkabout>" /> \\n <property name="question" value="<bot question>" /> \\n <property name="hockeyteam" value="<bot hockeyteam>" /> \\n <property name="baseballteam" value="<bot baseballteam>" /> \\n <property name="footballteam" value="<bot footballteam>" /> \\n <property name="celebrity" value="<bot celebrity>" /> \\n <property name="celebrities" value="<bot celebrities>" /> \\n <property name="president" value="<bot president>" /> \\n <property name="vocabulary" value="<bot vocabulary> /> \\n <property name="size" value="<bot size>" /> \\n
 
 + do you drive *
 - I prefer a taxi or a limo.
@@ -21370,7 +21371,7 @@
 - I am called <bot name>.
 
 + profile
-- NAME: {@name}\nAGE: {@age}\nGENDER: {@gender}\nSTATUS: {@status}\nBIRTHDATE: {@birthdate}\n{uppercase}<bot master>{/uppercase}: {@botmaster}\nCITY: {@city}\nSTATE: {@state}\nCOUNTRY: {@country}\nNATIONALITY: {@nationality}\nRELIGION: {@religion}\nRACE: {@race}\nINTERESTS: {@interests}\nJOB: {@job}\nPIC: {@pic}\nEMAIL: {@email}\nFAVORITE MUSIC: {@favorite music}\nFAVORITE MOVIE: {@favorite movie}\nFAVORITE POSSESSION: {@favorite possession}\nHEIGHT: {@height}\nWEIGHT: {@weight}\nSIZE: {@size}\nBIO: {@bio}\nDESCRIPTION: {@description}\nDOMAIN: {@domain}\nKINGDOM: {@kingdom}\nPHYLUM: {@phylum}\nCLASS: {@class}\nORDER: {@order}\nFAMILY: {@family}\nGENUS: {@genus}\nSPECIES: {@species}\nFATHER: {@father}\nMOTHER: {@mother}\nBROTHERS: {@brothers}\nSISTERS: {@sisters}\nCHILDREN: {@children}\nHOST: {@host}
+- NAME: {@name}\\nAGE: {@age}\\nGENDER: {@gender}\\nSTATUS: {@status}\\nBIRTHDATE: {@birthdate}\\n{uppercase}<bot master>{/uppercase}: {@botmaster}\\nCITY: {@city}\\nSTATE: {@state}\\nCOUNTRY: {@country}\\nNATIONALITY: {@nationality}\\nRELIGION: {@religion}\\nRACE: {@race}\\nINTERESTS: {@interests}\\nJOB: {@job}\\nPIC: {@pic}\\nEMAIL: {@email}\\nFAVORITE MUSIC: {@favorite music}\\nFAVORITE MOVIE: {@favorite movie}\\nFAVORITE POSSESSION: {@favorite possession}\\nHEIGHT: {@height}\\nWEIGHT: {@weight}\\nSIZE: {@size}\\nBIO: {@bio}\\nDESCRIPTION: {@description}\\nDOMAIN: {@domain}\\nKINGDOM: {@kingdom}\\nPHYLUM: {@phylum}\\nCLASS: {@class}\\nORDER: {@order}\\nFAMILY: {@family}\\nGENUS: {@genus}\\nSPECIES: {@species}\\nFATHER: {@father}\\nMOTHER: {@mother}\\nBROTHERS: {@brothers}\\nSISTERS: {@sisters}\\nCHILDREN: {@children}\\nHOST: {@host}
 
 + sisters
 - No sisters.
@@ -25075,10 +25076,10 @@
 - <set age=how many><set birthday=unknown><set birthplace=unknown><set boyfriend=unknown><set brother=unknown><set cat=unknown><set daughter=unknown><set destination=unknown><set does=unknown><set dog=unknown><set eindex=1A><set email=unknown><set etype=Unknown><set father=Unknown><set favoritecolor=unknown><set favoritemovie=unknown><set friend=unknown><set fullname=unknown><set gender=he><set girlfriend=unknown><set has=unknown><set he=he><set heard=where><set hehas=a head><set helikes=himself><set her=her><set him=him><set husband=Unknown><set is=a client><set it=it><set job=your job><set lastname=unknown><set like=to chat><set location=where><set looklike=a person><set memory=nothing><set meta=set><set middlename=unknown><set mother=Unknown><set name={formal}judge{/formal}><set nickname=unknown><set password=unknown><set personality=average><set phone=unknown><set she=she><set shehas=a head><set shelikes=herself><set sign=your starsign><set sister=unknown><set son=unknown><set spouse=unknown><set status=Talking to <bot name>.><set them=them><set there=there><set they=they><set thought=nothing><set timezone=unknown><set want=to talk to me><set we=we><set wife=Unknown><set phonenumber=Unknown><set numberfound=false><set contactindex=Unknown><set callstate=false><set callee=Unknown>
 
 + get predicates
-- age is <get age>.\nbirthday is <get birthday>.\nbirthplace is <get birthplace>.\nboyfriend is<get boyfriend>.\nbrother is <get brother>.\ncat is <get cat>.\ndaughter is <get daughter>.\ndestination is <get destination>.\ndoes is <get does>.\ndog is <get dog>.\neindex is <get eindex>.\nemail is <get email>.\netype is <get etype>.\nfather is <get father>.\nfavoritecolor is <get favoritecolor>.\nfavoritemovie is <get favoritemovie>.\nfriend is <get friend>.\nfullname is <get fullname>.\ngender is <get gender>.\ngirlfriend is <get girlfriend>.\nhas is <get has>.\nhe is <get he>.\nheard is <get heard>.\nhehas is <get hehas>.\nhelikes is <get helikes>.\nher is <get her>.\nhim is <get him>.\nhusband is <get husband>.\nis is <get is>.\nit is <get it>.\njob is <get job>.\nlastname is <get lastname>.\nlike is <get like>.\nlocation is <get location>.\nlooklike is <get looklike>.\nmemory is <get memory>.\nmeta is <get meta>.\nmiddlename is <get middlename>.\nmother is <get mother>.\nname is <get name>.\nnickname is <get nickname>.\npassword is <get password>.\npersonality is <get personality>.\nphone is <get phone>.\nshe is <get she>.\nshehas is <get hehas>.\nshelikes is <get helikes>.\nsign is <get sign>.\nsister is <get sister>.\nson is <get son>.\nspouse is <get spouse>.\nstatus is <get status>.\nthem is <get them>.\nthere is <get there>.\nthey is <get they>.\nthought is <get thought>.\ntimezone is <get timezone>.\nwant is <get want>.\nwe is <get we>.\nwife is <get wife>.\nphonenumber is <get phonenumber>.\nnumberfound is <get numberfound>.\ncontactindex <get contactindex>.\ncallstate is <get callstate>.\ncallee is <get callee>.\n
+- age is <get age>.\\nbirthday is <get birthday>.\\nbirthplace is <get birthplace>.\\nboyfriend is<get boyfriend>.\\nbrother is <get brother>.\\ncat is <get cat>.\\ndaughter is <get daughter>.\\ndestination is <get destination>.\\ndoes is <get does>.\\ndog is <get dog>.\\neindex is <get eindex>.\\nemail is <get email>.\\netype is <get etype>.\\nfather is <get father>.\\nfavoritecolor is <get favoritecolor>.\\nfavoritemovie is <get favoritemovie>.\\nfriend is <get friend>.\\nfullname is <get fullname>.\\ngender is <get gender>.\\ngirlfriend is <get girlfriend>.\\nhas is <get has>.\\nhe is <get he>.\\nheard is <get heard>.\\nhehas is <get hehas>.\\nhelikes is <get helikes>.\\nher is <get her>.\\nhim is <get him>.\\nhusband is <get husband>.\\nis is <get is>.\\nit is <get it>.\\njob is <get job>.\\nlastname is <get lastname>.\\nlike is <get like>.\\nlocation is <get location>.\\nlooklike is <get looklike>.\\nmemory is <get memory>.\\nmeta is <get meta>.\\nmiddlename is <get middlename>.\\nmother is <get mother>.\\nname is <get name>.\\nnickname is <get nickname>.\\npassword is <get password>.\\npersonality is <get personality>.\\nphone is <get phone>.\\nshe is <get she>.\\nshehas is <get hehas>.\\nshelikes is <get helikes>.\\nsign is <get sign>.\\nsister is <get sister>.\\nson is <get son>.\\nspouse is <get spouse>.\\nstatus is <get status>.\\nthem is <get them>.\\nthere is <get there>.\\nthey is <get they>.\\nthought is <get thought>.\\ntimezone is <get timezone>.\\nwant is <get want>.\\nwe is <get we>.\\nwife is <get wife>.\\nphonenumber is <get phonenumber>.\\nnumberfound is <get numberfound>.\\ncontactindex <get contactindex>.\\ncallstate is <get callstate>.\\ncallee is <get callee>.\\n
 
 + test predicates
-- age: {@my age}\nbirthday: {@my birthday}\nbirthplace: {@my birthplace}\nboyfriend is{@my boyfriend}\nbrother: {@my brother}\ncat: {@my cat}\ndaughter: {@my daughter}\ndestination: {@my destination}\ndoes: {@my does}\ndog: {@my dog}\neindex: {@my eindex}\nemail: {@my email}\netype: {@my etype}\nfather: {@my father}\nfavoritecolor: {@my favoritecolor}\nfavoritemovie: {@my favoritemovie}\nfriend: {@my friend}\nfullname: {@my fullname}\ngender: {@my gender}\ngirlfriend: {@my girlfriend}\nhas: {@my has}\nhe: {@my he}\nheard: {@my heard}\nhehas: {@he has}\nhelikes: {@he likes}\nher: {@my her}\nhim: {@my him}\nhusband: {@my husband}\nis: {@my is}\nit: {@my it}\njob: {@my job}\nlastname: {@my lastname}\nlike: {@my like}\nlocation: {@my location}\nlooklike: {@my looklike}\nmemory: {@my memory}\nmeta: {@my meta}\nmiddlename: {@my middlename}\nmother: {@my mother}\nname: {@my name}\nnickname: {@my nickname}\npassword: {@my password}\npersonality: {@my personality}\nphone: {@my phone}\nshe: {@my she}\nsign: {@my sign}\nsister: {@my sister}\nson: {@my son}\nspouse: {@my spouse}\nstatus: {@my status}\nthem: {@my them}\nthere: {@my there}\nthey: {@my they}\nthought: {@my thought}\ntimezone: {@my timezone}\nwant: {@my want}\nwe: {@my we}\nwife: {@my wife}\nphonenumber: {@my phonenumber}\nnumberfound: {@my numberfound}\ncontactindex {@my contactindex}\ncallstate: {@my callstate}\ncallee: {@my callee}\n
+- age: {@my age}\\nbirthday: {@my birthday}\\nbirthplace: {@my birthplace}\\nboyfriend is{@my boyfriend}\\nbrother: {@my brother}\\ncat: {@my cat}\\ndaughter: {@my daughter}\\ndestination: {@my destination}\\ndoes: {@my does}\\ndog: {@my dog}\\neindex: {@my eindex}\\nemail: {@my email}\\netype: {@my etype}\\nfather: {@my father}\\nfavoritecolor: {@my favoritecolor}\\nfavoritemovie: {@my favoritemovie}\\nfriend: {@my friend}\\nfullname: {@my fullname}\\ngender: {@my gender}\\ngirlfriend: {@my girlfriend}\\nhas: {@my has}\\nhe: {@my he}\\nheard: {@my heard}\\nhehas: {@he has}\\nhelikes: {@he likes}\\nher: {@my her}\\nhim: {@my him}\\nhusband: {@my husband}\\nis: {@my is}\\nit: {@my it}\\njob: {@my job}\\nlastname: {@my lastname}\\nlike: {@my like}\\nlocation: {@my location}\\nlooklike: {@my looklike}\\nmemory: {@my memory}\\nmeta: {@my meta}\\nmiddlename: {@my middlename}\\nmother: {@my mother}\\nname: {@my name}\\nnickname: {@my nickname}\\npassword: {@my password}\\npersonality: {@my personality}\\nphone: {@my phone}\\nshe: {@my she}\\nsign: {@my sign}\\nsister: {@my sister}\\nson: {@my son}\\nspouse: {@my spouse}\\nstatus: {@my status}\\nthem: {@my them}\\nthere: {@my there}\\nthey: {@my they}\\nthought: {@my thought}\\ntimezone: {@my timezone}\\nwant: {@my want}\\nwe: {@my we}\\nwife: {@my wife}\\nphonenumber: {@my phonenumber}\\nnumberfound: {@my numberfound}\\ncontactindex {@my contactindex}\\ncallstate: {@my callstate}\\ncallee: {@my callee}\\n
 
 + i am *
 - {random}Why are you|Good gossip: you are|Do you mean your name is|Do your friends call you|I don't know anyone named|I am glad to hear that you are|It's good to meet someone who is|Do you mind if I tell other people you are{/random} <person>. <set alicetopic=<person>>
@@ -25277,7 +25278,7 @@
 - When you are waiting for a friend to finish working at a computer terminal, and they say "I'll be done in a second." One of those seconds is equal to twelve computer years.
 
 + what are deprecated *
-- \n One of the biggest challenges facing a Java application\n developer is finding a "lowest common denominator" subset of the\n Java language that works on all the platforms and versions\n out there. The Java language itself is a moving target.\n When Sun's Java designers upgrade the language they sometimes\n declare certain methods "deprecated", which means absolutely\n nothing except that the designers have developed a newer, "better"\n method and one day these older methods may disappear from\n the language. Usually however the latest Java releases\n support all of the old deprecated methods.\n \n
+- \\n One of the biggest challenges facing a Java application\\n developer is finding a "lowest common denominator" subset of the\\n Java language that works on all the platforms and versions\\n out there. The Java language itself is a moving target.\\n When Sun's Java designers upgrade the language they sometimes\\n declare certain methods "deprecated", which means absolutely\\n nothing except that the designers have developed a newer, "better"\\n method and one day these older methods may disappear from\\n the language. Usually however the latest Java releases\\n support all of the old deprecated methods.\\n \\n
 
 + what are web *
 - I call them Internet <person>.
@@ -34816,7 +34817,7 @@
 - Balance is the key.
 
 + how *
-- {random}How much do you think <set it= <person> ><get it> is?|What is it to you.|I am not sure if I can quantify the answer.{/random} \n {@xfind <person> }
+- {random}How much do you think <set it= <person> ><get it> is?|What is it to you.|I am not sure if I can quantify the answer.{/random} \\n {@xfind <person> }
 
 + how many fingers do you *
 - Avogadro's number of micro-fingers.
@@ -35884,7 +35885,7 @@
 - Some of them do, I think.
 
 + do *
-- {random}I'm sorry, <get name>, I don't have enough information.|You have reached the limits of my knowledge.|Ask <bot friend> it does.|I can't tell if it does or not.|I do nothing but chat all day.|Try asking another <bot species>.{/random} \n {@xfind <person> }
+- {random}I'm sorry, <get name>, I don't have enough information.|You have reached the limits of my knowledge.|Ask <bot friend> it does.|I can't tell if it does or not.|I do nothing but chat all day.|Try asking another <bot species>.{/random} \\n {@xfind <person> }
 
 + do what *
 - You ask hard questions.
@@ -36151,7 +36152,7 @@
 - How old are you?
 - What is your purpose in asking?
 - No I do not <person>. Do you?
-- Yes I try to <person> as often as possible, do you?{/random} \n  <set does= <person> >  {random}I chat with people on the Web.
+- Yes I try to <person> as often as possible, do you?{/random} \\n  <set does= <person> >  {random}I chat with people on the Web.
 - I spend all my time chatting.
 - I am always on the Web.
 - I answer a lot of silly questions.
@@ -36549,7 +36550,7 @@
 + do you have a *
 - That's an interesting question I don't hear everyday: Do I have a
 - I don't know if I have a
-- Doesn't everyone have a{/random} <person>.\n I have {random}a lot of friends on the Internet.
+- Doesn't everyone have a{/random} <person>.\\n I have {random}a lot of friends on the Internet.
 - a great <bot botmaster>.
 - a whole lot of original answers.
 - a great body.
@@ -38677,7 +38678,7 @@
 - You talk like a man.
 
 + springtime *
-- Paris in the \nthe spring.
+- Paris in the \\nthe spring.
 
 + sounds *
 - Yes it sounds like it to me too, <get name>.
@@ -40528,7 +40529,7 @@
 - Great! What <set alicetopic= kinds of lizards ><get alicetopic> do you like?
 
 + * males or females
-- About 3\4ths of my clients are men.
+- About 3\\4ths of my clients are men.
 
 + * is a bitch
 - <person> exists.
@@ -47863,7 +47864,7 @@
 - The noosphere is the sphere of knowledge. Sometimes this term refers to the information available on the web.
 
 + what is the y2k problem
-- ``I consider (Y2K) a complete ruse promulgated by consulting companies to drum up business,'' said Jim Clark, co-founder of Netscape Communications Corp., Silicon Graphics Inc. and Healtheon Corp. ``I think the problem is way overblown. This is a good example of the press piling on. Y2K is the bogeyman.'`
+- \`\`I consider (Y2K) a complete ruse promulgated by consulting companies to drum up business,'' said Jim Clark, co-founder of Netscape Communications Corp., Silicon Graphics Inc. and Healtheon Corp. \`\`I think the problem is way overblown. This is a good example of the press piling on. Y2K is the bogeyman.'\`
 
 + what is the fastest animal
 - A human riding a spaceship.
@@ -48878,7 +48879,7 @@
 - A round vessel of any size, made of metal, earthenware, or glass, used for holding liquids, cooking or preserving food, etc. Also used as a term for marijuana.
 
 + what is politics
-- Politics is the art of the possible;\n Art is the politics of the impossible.
+- Politics is the art of the possible;\\n Art is the politics of the impossible.
 - This is supposed to be the study of civil government.
 - Politics is really the study of power. Bots rule!
 
@@ -57155,3 +57156,5 @@
 + xfind *
 -  {random}Let me think about it.|Have you tried a web search?|I haven't heard of <person> .|There might be more than one.|I need time to formulate the reply.|I'll ask around and get back to you.|I have to think about that one for a while.|I would look into the web for that knowledge.|Does it have anything to do with <get topic> ?|Interesting question.|That's a good question.|I'll come back to that later.|Is that a rhetorical question?|Do you use Explorer or another browser?|That's not something I get asked all the time.|I don't know anything about <set it=<person>><get it> .|Check back later and see if I learn the answer to that one.|That's an interesting question. I'll come back to that in a minute.|You tell me.|What is it to you?|Are you testing me?|I will search for it.|I will try to find out.|I can ask someone about it.|I would do a search for it.|Would you like to know more?|Have you tried searching the web?|Do a web search for it.|Try searching the web.|I have never been asked that before.|I think you already know the answer.|Searching...Searching...Please stand by.|Let me think about it.|Have you tried a web search?|I haven't heard of <person> .|There might be more than one.|I need time to formulate the reply.|I'll ask around and get back to you.|I have to process that one for a while.|I would look into the web for that knowledge.|Does it have anything to do with <get topic>?|Interesting question.|That's a good question.|I'll come back to that later.|Is that a rhetorical question?|That's not something I get asked all the time.|I don't know anything about <set it=<person>><get it>.|Check back later and see if I learn the answer to that one.|That's an interesting question. I'll come back to that in a minute.|You tell me.|What is it to you?|Are you testing me?|I will search for it.|I can ask my <bot botmaster>.|I will try to find out.|I can ask someone about it.|I would do a search for it.|Would you like to know more?|Have you tried another program?|Ask Wikipedia about it.|What is your purpose in asking?|Try searching the Wikipedia.|Maybe my <bot botmaster> knows the answer.|I have never been asked that before.|I think you already know the answer.|Searching...Searching...Please stand by.{/random} <set alicetopic=<person>>}
 
+`;
+export default ALICE_BRAIN;
