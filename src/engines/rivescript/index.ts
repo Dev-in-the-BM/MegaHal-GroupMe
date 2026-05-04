@@ -69,6 +69,9 @@ class RiveScriptEngine implements ChatEngine {
 	 */
 	async reply(input: string): Promise<string> {
 		try {
+			// Skip the intro interview for group chats
+			this.bot.setUservar('localuser', 'isGroupChat', 'true');
+
 			const reply = await this.bot.reply('localuser', input);
 			return typeof reply === 'string' ? reply : String(reply);
 		} catch (err) {
