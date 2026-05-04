@@ -34,10 +34,10 @@ class MegaHALEngine implements ChatEngine {
     await this.hal.become(name);
   }
 
-  reply(input: string): string {
+  reply(input: string): Promise<string> {
     // MegaHAL.reply() handles learning internally based on this.learning flag
     // We call reply but don't call learn separately to avoid double-learning
-    return this.hal.reply(input);
+    return Promise.resolve(this.hal.reply(input));
   }
 
   learn(input: string): void {

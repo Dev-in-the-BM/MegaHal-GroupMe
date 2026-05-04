@@ -2,7 +2,10 @@ import { Hono } from 'hono';
 import { ChatEngineRegistry } from './engines/index.js';
 // Import MegaHAL engine to register it (lazy-loaded via registry)
 import './engines/megahal/index.js';
+// Import RiveScript engine to register it
+import './engines/rivescript/index.js';
 import type { ChatEngine } from './engines/types.js';
+import { AVAILABLE_BRAINS as RIVESCRIPT_BRAINS } from './engines/rivescript/brains.js';
 
 // Vercel Node.js runtime - use process.env instead of Bindings
 export interface GroupConfig {
@@ -128,7 +131,7 @@ app.post('/', async (c) => {
 		(engine as any).learning = false;
 	}
 
-	const reply = engine.reply(text);
+	const reply = await engine.reply(text);
 
 	// POST REPLY FIRST (await required for serverless)
 	// Must await before returning to prevent container freeze
@@ -187,7 +190,7 @@ const PERSONALITIES = [
 ];
 
 // Available engines (can be extended)
-const ENGINES = ['megahal']; // Add more engines here as they become available
+const ENGINES = ['megahal', 'rivescript']; // Add more engines here as they become available
 
 const CONFIG_COMMANDS = [
 	{ num: 1, name: 'personality', desc: 'Change the bot personality', usage: '!personality <name>' },
@@ -230,23 +233,28 @@ async function handleAdminCommand(c: any, body: GroupMeMessage, config: GroupCon
 
 	// --- Interactive submenu handlers ---
 	if (cmd === 'personality') {
+		// For RiveScript, brains are the "personalities"
+		const isRivescript = config.engine === 'rivescript';
+		const availablePersonas = isRivescript ? [...RIVESCRIPT_BRAINS] : PERSONALITIES;
+
 		if (!arg) {
 			// Show personality selection menu
 			let replyText = '🎭 *Personality Selection*\n\n';
-			replyText += `Current: *${config.personality}*\n\n`;
+			replyText += `Current: *${config.personality}*\n`;
+			replyText += `Engine: *${config.engine}*\n\n`;
 			replyText += 'Reply with a number to select:\n\n';
-			PERSONALITIES.forEach((p, i) => {
+			availablePersonas.forEach((p, i) => {
 				const marker = p === config.personality ? ' ✅' : '';
 				replyText += `${i + 1}. ${p}${marker}\n`;
 			});
 			await postMessage(botId, replyText);
 			return c.text('OK');
 		}
-		if (!PERSONALITIES.includes(arg)) {
+		if (!availablePersonas.includes(arg)) {
 			// Invalid personality, show menu
 			let replyText = `❌ Unknown personality: *${arg}*\n\n`;
 			replyText += 'Available personalities:\n\n';
-			PERSONALITIES.forEach((p, i) => {
+			availablePersonas.forEach((p, i) => {
 				replyText += `${i + 1}. ${p}\n`;
 			});
 			await postMessage(botId, replyText);

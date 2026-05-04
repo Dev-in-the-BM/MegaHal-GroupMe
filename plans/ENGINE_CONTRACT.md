@@ -26,8 +26,8 @@ Only the active engine is loaded in memory. Engines are lazy-loaded via dynamic 
 
 ```typescript
 interface ChatEngine {
-  // Generate a reply for the given input
-  reply(input: string): string;
+  // Generate a reply for the given input (async for some engines like RiveScript)
+  reply(input: string): Promise<string>;
 
   // Learn from input (called after reply when learning is enabled)
   learn(input: string): void;
@@ -185,6 +185,32 @@ When implementing a new engine, ensure:
 2. Existing tests still pass (`npm test`)
 3. The engine loads correctly when selected in config
 4. Brain persistence works (save/load round-trip)
+
+## RiveScript Engine
+
+The RiveScript engine (`src/engines/rivescript/`) is a pattern-matching chatbot engine bundled with the Aiden brain (~73KB across 14 .rive files from https://github.com/aichaos/aiden).
+
+### Key Differences from MegaHAL
+
+| Aspect | MegaHAL | RiveScript |
+|--------|---------|------------|
+| Learning | Learns from chat history at runtime | No learning (pattern-based) |
+| Brain | Binary state (serialize/deserialize) | `.rive` pattern files |
+| Persistence | Save/load brain state | No persistence needed |
+| Personality | Programmatic personality modules | Brain file name |
+| reply() return | `string` (sync) | `Promise<string>` (async) |
+
+### RiveScript Files
+
+```
+src/engines/rivescript/
+├── index.ts    # RiveScriptEngine class implementing ChatEngine
+└── brains.ts   # Embedded brain content (BRAIN_AIDEN)
+```
+
+### Available Brains
+
+Currently only `aiden` brain is bundled. Personality menu shows Rivescript brains when `engine = 'rivescript'`.
 
 ## Dependency Notes
 

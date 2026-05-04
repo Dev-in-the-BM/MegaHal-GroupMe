@@ -9,8 +9,9 @@
 export interface ChatEngine {
   /**
    * Generate a reply for the given input text.
+   * Async to support engines (like RiveScript) that use async reply generation.
    */
-  reply(input: string): string;
+  reply(input: string): Promise<string>;
 
   /**
    * Learn from the input text. Called after reply() when learning is enabled.
