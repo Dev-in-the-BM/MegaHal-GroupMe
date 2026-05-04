@@ -13,7 +13,7 @@
 import RiveScript from 'rivescript';
 import type { ChatEngine } from '../types.js';
 import { ChatEngineRegistry } from '../index.js';
-import { BRAIN_AIDEN, AVAILABLE_BRAINS } from './brains.js';
+import { BRAIN_AIDEN, ALICE_BRAIN, AVAILABLE_BRAINS } from './brains.js';
 
 // Register this engine with the registry
 ChatEngineRegistry.register('rivescript', async () => {
@@ -41,7 +41,9 @@ class RiveScriptEngine implements ChatEngine {
 		const brainName = personality || 'aiden';
 
 		// Load the appropriate brain
-		if (brainName === 'aiden') {
+		if (brainName === 'alice') {
+			this.currentBrain = ALICE_BRAIN;
+		} else if (brainName === 'aiden') {
 			this.currentBrain = BRAIN_AIDEN;
 		} else {
 			// Fallback to aiden brain for unknown personalities
