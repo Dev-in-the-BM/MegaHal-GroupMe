@@ -10,7 +10,7 @@
  * - supportsPersonality is false (ELIZA doesn't use personalities, just its built-in script)
  */
 
-import { ElizaBot } from 'elizabot';
+import ElizaBot from 'elizabot';
 import type { ChatEngine } from '../types.js';
 import { ChatEngineRegistry } from '../index.js';
 
